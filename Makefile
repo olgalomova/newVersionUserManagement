@@ -56,7 +56,7 @@ fclean: down
 
 reset-db:
 	@printf "Resetting database...\n"
-	@rm -f $(DATA_DIR)//users.db
+	@rm -f $(DATA_DIR)/users.db
 	@$(DOCKER_COMPOSE) restart backend db-init
 	@printf "Database reset. New database will be created on next request\n"
 

@@ -51,13 +51,13 @@ fclean: down
 	@docker system prune --all --force --volumes
 	@docker network prune --force
 	@docker volume prune --force
-	@rm -rf $(DATA_DIR)/*.sqlite
+	@rm -rf $(DATA_DIR)/*.db
 	@printf "Full clean completed\n"
 
 reset-db:
 	@printf "Resetting database...\n"
-	@rm -f $(DATA_DIR)/database.sqlite
-	@$(DOCKER_COMPOSE) restart php
+	@rm -f $(DATA_DIR)//users.db
+	@$(DOCKER_COMPOSE) restart backend db-init
 	@printf "Database reset. New database will be created on next request\n"
 
 .PHONY: all build setup down stop start restart re clean fclean reset-db

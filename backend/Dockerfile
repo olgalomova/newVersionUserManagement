@@ -1,6 +1,8 @@
-FROM node:18-alpine
+FROM alpine:3.18
 
 WORKDIR /app
+
+RUN apk add --no-cache nodejs npm
 
 # Копируем package.json и package-lock.json
 COPY package*.json ./

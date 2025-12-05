@@ -1,0 +1,16 @@
+FROM node:18-alpine
+
+WORKDIR /app
+
+# Копируем package.json
+COPY package*.json ./
+
+# Устанавливаем только необходимые зависимости для инициализации БД
+RUN npm install --omit=dev
+
+# Копируем только файлы для инициализации БД
+COPY init-db.js ./
+COPY database.js ./
+
+# Команда будет переопределена в docker-compose
+CMD ["node", "init-db.js"]

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+		<link rel="stylesheet" href="assets/styles/style.css">
+		<title>Log in</title>
+	</head>
+	<body>
+		<main>
+			<h2>Log in</h2>
+			<form id="loginForm">
+				<input type="text" placeholder="Login" name="login" required pattern="[a-zA-Z0-9_]+" title="Only letters, numbers and underscore">
+				<input type="password" placeholder="Password" name="password" required minlength="6">
+				<button type="submit">Sign in</button>
+			</form>
+			<p id="message"></p>
+		</main>
+		<script>
+                        // Если уже залогинен, редирект на профиль
+			async function checkAuth() {
+				try {
+					const res = await fetch('/profile', {
+						credentials: 'include'
+					});
+					if (res.ok) {
+						window.location.href = '/profile.html';
+					}
+				}
+				catch (err) {
+					// Не залогинен, остаёмся на главной
+				}
+			}
+                        checkAuth();
+			const form = document.getElementById('loginForm')
+			form.addEventListener('submit', async (e) => {
+				e.preventDefault()
+				const data = Object.fromEntries(new FormData(form).entries())
+				const res = await fetch('/login', {
+					method: 'POST',
+					headers: { 'Content-Type': 'application/json' },
+					body: JSON.stringify(data),
+					credentials: 'include'  // ← ДОБАВИТЬ
+				})
+				const result = await res.json()
+				if (res.ok) {
+					window.location.href = '/profile.html'
+				}
+				else {
+					document.getElementById('message').textContent = result.message
+				}
+			})
+		</script>
+	</body>
+</html>

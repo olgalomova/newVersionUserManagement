@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+		<link rel="stylesheet" href="assets/styles/style.css">
+		<title>Profile</title>
+		<style>
+			body {
+				display: none;
+			}
+		</style>
+	</head>
+	<body>
+		<main>
+			<h2>Personal account</h2>
+			<div id="avatarBlock" style="margin-bottom: 20px;">
+				<img id="avatarImg" src="uploads/default.png" style="width:120px;height:120px;border-radius:50%;object-fit:cover;">
+			</div>
+			<p id="Welcome"></p>
+			<form>
+				<button id="logoutBtn" type="button">Log out</button>
+			</form>
+		</main>
+		<main>
+			<h2>Change personal data</h2>
+			<form id="editForm">
+				<span>Login:</span>
+					<input id="loginInput" name="login" type="text" required pattern="[a-zA-Z0-9_]+" title="Only letters, numbers and underscore">
+				<span>Email:</span>
+					<input id="emailInput" name="email" type="text" required>
+				<span>New password:</span>
+					<input id="passwordInput" name="password" type="password" minlength="6" placeholder="Leave empty to keep current">
+				<button type="submit">Save</button>
+				<button id="deleteProfileBtn" type="button">Delete profile</button>
+			</form>
+			<p id="editMessage"></p>
+		</main>
+		<main>
+			<h2>Avatar settings</h2>
+			<form id="avatarForm" enctype="multipart/form-data">
+				<input type="file" name="avatar" accept="image/*" required>
+				<button type="submit">Upload avatar</button>
+				<button id="deleteAvatarBtn" type="button">Delete avatar</button>
+			</form>
+			<p id="avatarMessage"></p>
+		</main>
+		<script>
+			let userId = null;
+                        let isSubmitting = false;
+                        
+                        // Загружаем профиль
+                        async function loadProfile() {
+                                try {
+                                        const res = await fetch('/profile', {
+                                                credentials: 'include'
+                                        });
+                                        
+                                        // Если не авторизован - редирект
+                                        if (!res.ok) {
+                                                window.location.href = '/login.html';
+                                                return;
+                                        }
+                                        
+                                        const data = await res.json();
+                                        userId = data.id;
+                                        
+                                        document.getElementById('Welcome').textContent = "Welcome, " + data.login + "!";
+                                        
+                                        const avatarSrc = data.avatar ? '/uploads/' + encodeURIComponent(data.avatar) : '/uploads/default.png';
+                                        document.getElementById('avatarImg').src = avatarSrc;
+                                        
+                                        document.getElementById('loginInput').value = data.login;
+                                        document.getElementById('emailInput').value = data.email;
+                                        
+                                        // Показываем страницу только после успешной загрузки
+                                        document.body.style.display = 'block';
+                                } catch (err) {
+                                        // При ошибке - редирект на логин
+                                        window.location.href = '/login.html';
+                                }
+                        }
+                        
+                        loadProfile();
+                        
+                        // Обновление данных
+                        document.getElementById('editForm').addEventListener('submit', async (e) => {
+                                e.preventDefault();
+                                
+                                if (isSubmitting) return;
+                                isSubmitting = true;
+                                
+                                try {
+                                        const body = {
+                                                login: document.getElementById('loginInput').value,
+                                                email: document.getElementById('emailInput').value,
+                                                password: document.getElementById('passwordInput').value
+                                        };
+                                        
+                                        const res = await fetch('/profile', {
+                                                method: 'PUT',
+                                                headers: {'Content-Type': 'application/json'},
+                                                body: JSON.stringify(body),
+                                                credentials: 'include'
+                                        });
+                                        
+                                        if (!res.ok && res.status === 401) {
+                                                window.location.href = '/login.html';
+                                                return;
+                                        }
+                                        
+                                        const msg = await res.json();
+                                        document.getElementById('editMessage').textContent = msg.message;
+                                        
+                                        if (res.ok) loadProfile();
+                                } finally {
+                                        isSubmitting = false;
+                                }
+                        });
+                        
+                        // Загрузка аватара
+                        document.getElementById('avatarForm').addEventListener('submit', async (e) => {
+                                e.preventDefault();
+                                
+                                if (isSubmitting) return;
+                                isSubmitting = true;
+                                
+                                try {
+                                        const fileInput = e.target.avatar;
+                                        const file = fileInput.files[0];
+                                        
+                                        // Проверка размера (макс 5MB)
+                                        if (file && file.size > 5 * 1024 * 1024) {
+                                                document.getElementById('avatarMessage').textContent = 'File too large! Max 5MB';
+                                                return;
+                                        }
+                                        
+                                        // Проверка типа файла
+                                        const allowedTypes = ['image/jpeg', 'image/png', 'image/webp'];
+                                        if (file && !allowedTypes.includes(file.type)) {
+                                                document.getElementById('avatarMessage').textContent = 'Invalid file type!';
+                                                return;
+                                        }
+                                        
+                                        const formData = new FormData();
+                                        formData.append("avatar", file);
+                                        
+                                        const res = await fetch('/avatar', {
+                                                method: 'POST',
+                                                body: formData,
+                                                credentials: 'include'
+                                        });
+                                        
+                                        if (!res.ok && res.status === 401) {
+                                                window.location.href = '/login.html';
+                                                return;
+                                        }
+                                        
+                                        const msg = await res.json();
+                                        document.getElementById('avatarMessage').textContent = msg.message;
+                                        
+                                        if (res.ok) loadProfile();
+                                } finally {
+                                        isSubmitting = false;
+                                }
+                        });
+                        
+                        // Удаление аватара
+                        document.getElementById('deleteAvatarBtn').onclick = async () => {
+                                const res = await fetch('/avatar', { method: 'DELETE', credentials: 'include' });
+                                
+                                if (!res.ok && res.status === 401) {
+                                        window.location.href = '/login.html';
+                                        return;
+                                }
+                                
+                                const msg = await res.json();
+                                document.getElementById('avatarMessage').textContent = msg.message;
+                                loadProfile();
+                        };
+                        
+                        // Удаление профиля
+                        document.getElementById('deleteProfileBtn').onclick = async () => {
+                                if (!confirm('Are you sure you want to delete your profile?')) return;
+                                
+                                const res = await fetch('/profile', { method: 'DELETE', credentials: 'include' });
+                                if (res.ok) window.location.href = "/";
+                        };
+                        
+                        // Logout
+                        document.getElementById('logoutBtn').onclick = async () => {
+                                await fetch("/logout", { method: "POST", credentials: 'include' });
+                                window.location.href = "/login.html";
+                        };
+		</script>
+	</body>
+</html>

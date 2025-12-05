@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+		<link rel="stylesheet" href="assets/styles/style.css">
+		<title>Registration</title>
+	</head>
+	<body>
+		<main>
+			<h2>Registration</h2>
+			<form id="registrationForm" action="/registration" method="post">
+				<input type="text" placeholder="Login" name="login" required pattern="[a-zA-Z0-9_]+" title="Only letters, numbers and underscore">
+				<input type="email" placeholder="Email" name="email" required>
+				<input type="password" placeholder="Password" name="password" required minlength="6">
+				<button type="submit">Register</button>
+			</form>
+		<p id="message"></p>
+		</main>
+		<script>
+                        // Если уже залогинен, редирект на профиль
+			async function checkAuth() {
+				try {
+					const res = await fetch('/profile', {
+						credentials: 'include'
+					});
+					if (res.ok) {
+						window.location.href = '/profile.html';
+					}
+				} catch (err) {
+					// Не залогинен, остаёмся на главной
+				}
+			}
+			checkAuth();
+			const form = document.getElementById('registrationForm')
+			form.addEventListener('submit', async (e) => {
+				e.preventDefault()
+				const formData = new FormData(form)
+				const data = Object.fromEntries(formData.entries())
+				const res = await fetch('/registration', {
+					method: 'POST',
+					headers: { 'Content-Type': 'application/json' },
+					body: JSON.stringify(data),
+					credentials: 'include'
+				})
+				const result = await res.json()
+				if (res.ok) {
+					window.location.href = '/login.html'
+				}
+				else {
+					document.getElementById('message').textContent = result.message
+				}
+			})
+		</script>
+	</body>
+</html>

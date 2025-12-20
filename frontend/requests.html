@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Friend Requests</title>
+		<script src="https://cdn.tailwindcss.com"></script>
+		<script src="requests.js" defer></script>
+	</head>
+
+	<body class="bg-gray-200 text-gray-900 font-sans">
+		<nav class="bg-white shadow mb-8">
+			<div class="max-w-lg mx-auto flex justify-around py-4">
+				<a href="profile.html" class="text-blue-800 font-semibold hover:opacity-60 transition">Profile</a>
+				<a href="friends.html" class="text-blue-800 font-semibold hover:opacity-60 transition">Friends</a>
+				<a href="requests.html" class="text-blue-800 font-semibold hover:opacity-60 transition">Requests</a>
+				<a href="search.html" class="text-blue-800 font-semibold hover:opacity-60 transition">Search</a>
+			</div>
+		</nav>
+		<section class="max-w-lg mx-auto bg-white rounded-2xl p-5 shadow mb-8">
+			<h2 class="text-2xl font-semibold mb-4 text-center">Friend Requests</h2>
+
+			<div id="requestsContainer" class="flex flex-col gap-4">
+				<!-- Requests will be loaded here -->
+			</div>
+			<p id="emptyMessage" class="text-center text-gray-500 mt-4">
+			No friend requests at the moment.
+			</p>
+		</section>
+	</body>
+</html>

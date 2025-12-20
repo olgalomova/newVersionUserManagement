@@ -3,198 +3,120 @@
 	<head>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<link rel="preconnect" href="https://fonts.googleapis.com">
-		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-		<link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-		<link rel="stylesheet" href="assets/styles/style.css">
 		<title>Profile</title>
-		<style>
-			body {
-				display: none;
-			}
-		</style>
+		<script src="https://cdn.tailwindcss.com"></script>
+		<script src="profile.js" defer></script>
 	</head>
-	<body>
-		<main>
-			<h2>Personal account</h2>
-			<div id="avatarBlock" style="margin-bottom: 20px;">
-				<img id="avatarImg" src="uploads/default.png" style="width:120px;height:120px;border-radius:50%;object-fit:cover;">
+	<body class="bg-gray-200 text-gray-900 font-sans hidden">
+
+		<!-- Personal account -->
+		<section class="max-w-lg mx-auto bg-white rounded-2xl p-5 mb-8 text-center shadow">
+			<h2 class="text-2xl font-semibold mb-4">Personal account</h2>
+			<div id="avatarBlock" class="mb-5">
+				<img id="avatarImg" src="uploads/default.png" class="w-[120px] h-[120px] rounded-full object-cover mx-auto">
 			</div>
-			<p id="Welcome"></p>
+			<p id="Welcome" class="mb-4 text-lg"></p>
 			<form>
-				<button id="logoutBtn" type="button">Log out</button>
+				<button id="logoutBtn" type="button" class="bg-blue-800 text-white py-2 px-4 rounded-lg hover:opacity-50 transition">
+					Log out
+				</button>
 			</form>
-		</main>
-		<main>
-			<h2>Change personal data</h2>
-			<form id="editForm">
-				<span>Login:</span>
-					<input id="loginInput" name="login" type="text" required pattern="[a-zA-Z0-9_]+" title="Only letters, numbers and underscore">
-				<span>Email:</span>
-					<input id="emailInput" name="email" type="text" required>
-				<span>New password:</span>
-					<input id="passwordInput" name="password" type="password" minlength="6" placeholder="Leave empty to keep current">
-				<button type="submit">Save</button>
-				<button id="deleteProfileBtn" type="button">Delete profile</button>
+		</section>
+		<!-- Game Statistics -->
+		<section class="max-w-lg mx-auto bg-white rounded-2xl p-5 mb-8 shadow">
+			<h2 class="text-2xl font-semibold mb-4">Game Statistics</h2>
+			<div class="grid grid-cols-2 gap-4 mb-4">
+				<div class="bg-green-50 p-4 rounded-lg text-center">
+					<p class="text-gray-600 text-sm">Wins</p>
+					<p id="winsCount" class="text-2xl font-bold text-green-600">0</p>
+				</div>
+				<div class="bg-red-50 p-4 rounded-lg text-center">
+					<p class="text-gray-600 text-sm">Losses</p>
+					<p id="lossesCount" class="text-2xl font-bold text-red-600">0</p>
+				</div>
+				<div class="bg-blue-50 p-4 rounded-lg text-center">
+					<p class="text-gray-600 text-sm">Draws</p>
+					<p id="drawsCount" class="text-2xl font-bold text-blue-600">0</p>
+				</div>
+				<div class="bg-purple-50 p-4 rounded-lg text-center">
+					<p class="text-gray-600 text-sm">Total Games</p>
+					<p id="totalGamesCount" class="text-2xl font-bold text-purple-600">0</p>
+				</div>
+			</div>
+			<div class="bg-gray-50 p-4 rounded-lg text-center">
+				<p class="text-gray-600 text-sm">Win Rate</p>
+				<p id="winRate" class="text-xl font-bold text-gray-800">0%</p>
+			</div>
+		</section>
+
+		<!-- Navigation for friends -->
+		<nav class="bg-white shadow mb-8">
+			<div class="max-w-lg mx-auto flex justify-around py-4">
+				<a href="friends.html"
+				   class="text-blue-800 font-semibold hover:opacity-60 transition">
+					Friends
+				</a>
+
+				<a href="search.html"
+				   class="text-blue-800 font-semibold hover:opacity-60 transition">
+					Search new friends
+				</a>
+				<a href="requests.html" class="text-blue-800 font-semibold hover:opacity-60 transition">Requests</a>
+			</div>
+		</nav>
+
+		<!-- GAMES SECTION -->
+		<section class="max-w-lg mx-auto bg-white rounded-2xl p-5 mb-8 shadow">
+			<h2 class="text-2xl font-semibold mb-4 text-center">Play Ping Pong</h2>
+			<div class="flex flex-col gap-3">
+				<button id="playOneVOneBtn" class="bg-blue-600 text-white py-3 px-4 rounded-lg font-semibold hover:bg-blue-700 transition shadow-md">
+					Find Game (1v1)
+				</button>
+				<button id="playTournamentBtn" class="bg-blue-600 text-white py-3 px-4 rounded-lg font-semibold hover:bg-blue-700 transition shadow-md">
+					Tournament
+				</button>
+			</div>
+		</section>
+
+		<!-- Change personal data -->
+		<section class="max-w-lg mx-auto bg-white rounded-2xl p-5 mb-8 shadow">
+			<h2 class="text-2xl font-semibold mb-4">Change personal data</h2>
+			<form id="editForm" class="flex flex-col gap-3">
+				<label class="flex flex-col text-left">
+					<span class="mb-1">Login:</span>
+					<input id="loginInput" name="login" type="text" required pattern="[a-zA-Z0-9_]+"
+												 title="Only letters, numbers and underscore"
+												 class="p-2 rounded-lg border border-gray-400 w-full outline-none" />
+				</label>
+
+				<label class="flex flex-col text-left">
+					<span class="mb-1">Email:</span>
+					<input id="emailInput" name="email" type="text" required
+									    class="p-2 rounded-lg border border-gray-400 w-full outline-none" />
+				</label>
+
+				<label class="flex flex-col text-left">
+					<span class="mb-1">New password:</span>
+					<input id="passwordInput" name="password" type="password" minlength="6" placeholder="Leave empty to keep current"
+														class="p-2 rounded-lg border border-gray-400 w-full outline-none" />
+				</label>
+
+				<button type="submit" class="bg-blue-800 text-white py-2 rounded-lg w-full hover:opacity-50 transition">Save</button>
+				<button id="deleteProfileBtn" type="button" class="bg-red-600 text-white py-2 rounded-lg w-full hover:opacity-50 transition">Delete profile</button>
 			</form>
-			<p id="editMessage"></p>
-		</main>
-		<main>
-			<h2>Avatar settings</h2>
-			<form id="avatarForm" enctype="multipart/form-data">
-				<input type="file" name="avatar" accept="image/*" required>
-				<button type="submit">Upload avatar</button>
-				<button id="deleteAvatarBtn" type="button">Delete avatar</button>
+			<p id="editMessage" class="mt-3 text-red-600"></p>
+		</section>
+
+		<!-- Avatar settings -->
+		<section class="max-w-lg mx-auto bg-white rounded-2xl p-5 mb-8 shadow">
+			<h2 class="text-2xl font-semibold mb-4">Avatar settings</h2>
+			<form id="avatarForm" enctype="multipart/form-data" class="flex flex-col gap-3">
+				<input type="file" name="avatar" accept="image/*" class="border border-gray-400 rounded-lg p-2" required>
+				<button type="submit" class="bg-blue-800 text-white py-2 rounded-lg w-full hover:opacity-50 transition">Upload avatar</button>
+				<button id="deleteAvatarBtn" type="button" class="bg-red-600 text-white py-2 rounded-lg w-full hover:opacity-50 transition">Delete avatar</button>
 			</form>
-			<p id="avatarMessage"></p>
-		</main>
-		<script>
-			let userId = null;
-                        let isSubmitting = false;
-                        
-                        // Загружаем профиль
-                        async function loadProfile() {
-                                try {
-                                        const res = await fetch('/profile', {
-                                                credentials: 'include'
-                                        });
-                                        
-                                        // Если не авторизован - редирект
-                                        if (!res.ok) {
-                                                window.location.href = '/login.html';
-                                                return;
-                                        }
-                                        
-                                        const data = await res.json();
-                                        userId = data.id;
-                                        
-                                        document.getElementById('Welcome').textContent = "Welcome, " + data.login + "!";
-                                        
-                                        const avatarSrc = data.avatar ? '/uploads/' + encodeURIComponent(data.avatar) : '/uploads/default.png';
-                                        document.getElementById('avatarImg').src = avatarSrc;
-                                        
-                                        document.getElementById('loginInput').value = data.login;
-                                        document.getElementById('emailInput').value = data.email;
-                                        
-                                        // Показываем страницу только после успешной загрузки
-                                        document.body.style.display = 'block';
-                                } catch (err) {
-                                        // При ошибке - редирект на логин
-                                        window.location.href = '/login.html';
-                                }
-                        }
-                        
-                        loadProfile();
-                        
-                        // Обновление данных
-                        document.getElementById('editForm').addEventListener('submit', async (e) => {
-                                e.preventDefault();
-                                
-                                if (isSubmitting) return;
-                                isSubmitting = true;
-                                
-                                try {
-                                        const body = {
-                                                login: document.getElementById('loginInput').value,
-                                                email: document.getElementById('emailInput').value,
-                                                password: document.getElementById('passwordInput').value
-                                        };
-                                        
-                                        const res = await fetch('/profile', {
-                                                method: 'PUT',
-                                                headers: {'Content-Type': 'application/json'},
-                                                body: JSON.stringify(body),
-                                                credentials: 'include'
-                                        });
-                                        
-                                        if (!res.ok && res.status === 401) {
-                                                window.location.href = '/login.html';
-                                                return;
-                                        }
-                                        
-                                        const msg = await res.json();
-                                        document.getElementById('editMessage').textContent = msg.message;
-                                        
-                                        if (res.ok) loadProfile();
-                                } finally {
-                                        isSubmitting = false;
-                                }
-                        });
-                        
-                        // Загрузка аватара
-                        document.getElementById('avatarForm').addEventListener('submit', async (e) => {
-                                e.preventDefault();
-                                
-                                if (isSubmitting) return;
-                                isSubmitting = true;
-                                
-                                try {
-                                        const fileInput = e.target.avatar;
-                                        const file = fileInput.files[0];
-                                        
-                                        // Проверка размера (макс 5MB)
-                                        if (file && file.size > 5 * 1024 * 1024) {
-                                                document.getElementById('avatarMessage').textContent = 'File too large! Max 5MB';
-                                                return;
-                                        }
-                                        
-                                        // Проверка типа файла
-                                        const allowedTypes = ['image/jpeg', 'image/png', 'image/webp'];
-                                        if (file && !allowedTypes.includes(file.type)) {
-                                                document.getElementById('avatarMessage').textContent = 'Invalid file type!';
-                                                return;
-                                        }
-                                        
-                                        const formData = new FormData();
-                                        formData.append("avatar", file);
-                                        
-                                        const res = await fetch('/avatar', {
-                                                method: 'POST',
-                                                body: formData,
-                                                credentials: 'include'
-                                        });
-                                        
-                                        if (!res.ok && res.status === 401) {
-                                                window.location.href = '/login.html';
-                                                return;
-                                        }
-                                        
-                                        const msg = await res.json();
-                                        document.getElementById('avatarMessage').textContent = msg.message;
-                                        
-                                        if (res.ok) loadProfile();
-                                } finally {
-                                        isSubmitting = false;
-                                }
-                        });
-                        
-                        // Удаление аватара
-                        document.getElementById('deleteAvatarBtn').onclick = async () => {
-                                const res = await fetch('/avatar', { method: 'DELETE', credentials: 'include' });
-                                
-                                if (!res.ok && res.status === 401) {
-                                        window.location.href = '/login.html';
-                                        return;
-                                }
-                                
-                                const msg = await res.json();
-                                document.getElementById('avatarMessage').textContent = msg.message;
-                                loadProfile();
-                        };
-                        
-                        // Удаление профиля
-                        document.getElementById('deleteProfileBtn').onclick = async () => {
-                                if (!confirm('Are you sure you want to delete your profile?')) return;
-                                
-                                const res = await fetch('/profile', { method: 'DELETE', credentials: 'include' });
-                                if (res.ok) window.location.href = "/";
-                        };
-                        
-                        // Logout
-                        document.getElementById('logoutBtn').onclick = async () => {
-                                await fetch("/logout", { method: "POST", credentials: 'include' });
-                                window.location.href = "/login.html";
-                        };
-		</script>
+			<p id="avatarMessage" class="mt-3 text-red-600"></p>
+		</section>
+
 	</body>
 </html>

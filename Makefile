@@ -1,23 +1,17 @@
 NAME = user_management_app
-DOCKER_COMPOSE = docker-compose
-DATA_DIR = backend/data
+DOCKER_COMPOSE = docker compose
+PROJECT_NAME = newVersion
+DB_VOLUME = $(PROJECT_NAME)_db_volume
 
 all:
 	@printf "Launching $(NAME)...\n"
-	@$(MAKE) setup
 	@$(DOCKER_COMPOSE) up -d
 	@printf "Application started\n"
 
 build:
 	@printf "Building $(NAME)...\n"
-	@$(MAKE) setup
 	@$(DOCKER_COMPOSE) up -d --build
 	@printf "Application built and started\n"
-
-setup:
-	@printf "Creating necessary directories...\n"
-	@mkdir -p $(DATA_DIR)
-	@chmod 777 $(DATA_DIR)
 
 down:
 	@printf "Stopping $(NAME)...\n"
@@ -35,29 +29,33 @@ restart:
 	@printf "Restarting $(NAME)...\n"
 	@$(DOCKER_COMPOSE) restart
 
-re: down
+re:
 	@printf "Rebuilding $(NAME)...\n"
-	@$(MAKE) setup
+	@$(DOCKER_COMPOSE) down -v
 	@$(DOCKER_COMPOSE) up -d --build
 	@printf "Application rebuilt and started\n"
 
-clean: down
-	@printf "Cleaning $(NAME)...\n"
-	@docker system prune -a -f
-	@printf "Docker system cleaned\n"
+clean:
+	@printf "Cleaning unused Docker images...\n"
+	@docker image prune -f
+	@printf "Clean completed\n"
 
-fclean: down
-	@printf "Full clean of $(NAME)...\n"
-	@docker system prune --all --force --volumes
-	@docker network prune --force
-	@docker volume prune --force
-	@rm -rf $(DATA_DIR)/*.db
-	@printf "Full clean completed\n"
+fclean:
+	@printf "Full clean (containers + volumes + images)...\n"
+	@$(DOCKER_COMPOSE) down -v --rmi all
+	@docker system prune -f
+	@printf "Docker reset completed\n"
 
 reset-db:
-	@printf "Resetting database...\n"
-	@rm -f $(DATA_DIR)/users.db
-	@$(DOCKER_COMPOSE) restart backend db-init
-	@printf "Database reset. New database will be created on next request\n"
+	@printf "Resetting database (removing DB volume only)...\n"
+	@docker volume rm $(DB_VOLUME) 2>/dev/null || true
+	@$(DOCKER_COMPOSE) up -d
+	@printf "Database recreated\n"
 
-.PHONY: all build setup down stop start restart re clean fclean reset-db
+ps:
+	@$(DOCKER_COMPOSE) ps
+
+logs:
+	@$(DOCKER_COMPOSE) logs -f
+
+.PHONY: all build down stop start restart re clean fclean reset-db ps logs

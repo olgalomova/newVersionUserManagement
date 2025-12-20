@@ -3,57 +3,36 @@
 	<head>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<link rel="preconnect" href="https://fonts.googleapis.com">
-		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-		<link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-		<link rel="stylesheet" href="assets/styles/style.css">
 		<title>Registration</title>
+		<script src="https://cdn.tailwindcss.com"></script>
+		<script src="common.js"></script>
+		<script src="registration.js" defer></script>
 	</head>
-	<body>
-		<main>
-			<h2>Registration</h2>
-			<form id="registrationForm" action="/registration" method="post">
-				<input type="text" placeholder="Login" name="login" required pattern="[a-zA-Z0-9_]+" title="Only letters, numbers and underscore">
-				<input type="email" placeholder="Email" name="email" required>
-				<input type="password" placeholder="Password" name="password" required minlength="6">
-				<button type="submit">Register</button>
+	<body class="min-h-screen bg-gray-200 text-gray-900 font-sans flex items-start justify-center py-8">
+
+		<main class="w-[500px] border-3 border-gray-400 rounded-2xl p-5 text-center bg-white">
+			<h2 class="text-2xl font-semibold mb-4">Registration</h2>
+
+			<form id="registrationForm" class="flex flex-col gap-3">
+				<input type="text" name="login" placeholder="Login" required
+								pattern="[a-zA-Z0-9_]+" title="Only letters, numbers and underscore"
+											class="p-2 rounded-lg border border-gray-400 w-full outline-none" />
+				<input type="email" name="email" placeholder="Email" required
+								 class="p-2 rounded-lg border border-gray-400 w-full outline-none" />
+				<input type="password" name="password" placeholder="Password" required minlength="6"
+												       class="p-2 rounded-lg border border-gray-400 w-full outline-none" />
+				<button type="submit" class="bg-blue-800 text-white py-2 rounded-lg w-full hover:opacity-50 transition">
+					Register
+				</button>
+				<a href="login.html"
+				   class="bg-blue-500 hover:bg-blue-600 text-white py-2 rounded-lg w-full text-center transition mt-2">
+					Log in
+				</a>
 			</form>
-		<p id="message"></p>
+
+			<p id="message" class="mt-3 text-red-600"></p>
 		</main>
-		<script>
-                        // Если уже залогинен, редирект на профиль
-			async function checkAuth() {
-				try {
-					const res = await fetch('/profile', {
-						credentials: 'include'
-					});
-					if (res.ok) {
-						window.location.href = '/profile.html';
-					}
-				} catch (err) {
-					// Не залогинен, остаёмся на главной
-				}
-			}
-			checkAuth();
-			const form = document.getElementById('registrationForm')
-			form.addEventListener('submit', async (e) => {
-				e.preventDefault()
-				const formData = new FormData(form)
-				const data = Object.fromEntries(formData.entries())
-				const res = await fetch('/registration', {
-					method: 'POST',
-					headers: { 'Content-Type': 'application/json' },
-					body: JSON.stringify(data),
-					credentials: 'include'
-				})
-				const result = await res.json()
-				if (res.ok) {
-					window.location.href = '/login.html'
-				}
-				else {
-					document.getElementById('message').textContent = result.message
-				}
-			})
-		</script>
+
 	</body>
 </html>
+

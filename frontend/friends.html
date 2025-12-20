@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Friends</title>
+		<script src="https://cdn.tailwindcss.com"></script>
+	</head>
+	<body class="bg-gray-50">
+		<nav class="bg-white shadow mb-8">
+			<div class="max-w-lg mx-auto flex justify-around py-4">
+				<a href="friends.html"
+				   class="text-blue-800 font-semibold hover:opacity-60 transition">
+					Friends
+				</a>
+				<a href="search.html"
+				   class="text-blue-800 font-semibold hover:opacity-60 transition">
+					Search new friends
+				</a>
+				<a href="requests.html" class="text-blue-800 font-semibold hover:opacity-60 transition">
+					Requests
+				</a>
+				<a href="profile.html" class="text-blue-800 font-semibold hover:opacity-60 transition">Profile</a>
+			</div>
+		</nav>
+
+		<div class="max-w-lg mx-auto px-4">
+			<h1 class="text-3xl font-bold mb-6">Your Friends</h1>
+
+			<div id="friendsMessage" class="text-gray-600 mb-4"></div>
+			<div id="friendsList"></div>
+		</div>
+
+		<script src="friends.js"></script>
+	</body>
+</html>

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Create Tournament</title>
+		<script src="https://cdn.tailwindcss.com"></script>
+	</head>
+	<body class="bg-white text-gray-900">
+
+		<div id="modalBackdrop" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+			<div class="bg-white rounded-2xl p-8 w-full max-w-2xl shadow-2xl max-h-[90vh] overflow-y-auto">
+				<h2 class="text-3xl font-bold mb-6 text-center">Create Tournament</h2>
+
+				<!-- Loading State -->
+				<div id="loadingState" class="text-center">
+					<div class="inline-block animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+					<p class="mt-4 text-gray-600">Loading friends...</p>
+				</div>
+
+				<!-- Tournament Form -->
+				<div id="tournamentForm" class="hidden">
+					<!-- Tournament Name -->
+					<div class="mb-6">
+						<label class="block text-left mb-2 font-semibold">Tournament Name</label>
+						<input id="tournamentName" type="text" placeholder="e.g., Spring Championship" 
+										       class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+						<p class="text-sm text-gray-500 mt-1">Leave empty for auto-generated name</p>
+					</div>
+
+					<!-- Players Selection -->
+					<div class="mb-6">
+						<div class="flex items-center justify-between mb-3">
+							<label class="block text-left font-semibold">Select Players (2-5)</label>
+							<span id="playerCount" class="text-sm bg-blue-100 text-blue-700 px-3 py-1 rounded-full">0/5</span>
+						</div>
+						<div id="friendsList" class="grid gap-3 max-h-64 overflow-y-auto"></div>
+					</div>
+
+					<!-- Empty State -->
+					<div id="emptyState" class="hidden text-center py-8">
+						<p class="text-gray-600 mb-4">No friends available</p>
+						<a href="friends.html" class="text-blue-600 hover:text-blue-700">Go to Friends →</a>
+					</div>
+
+					<!-- Selected Players Preview -->
+					<div id="selectedPlayersPreview" class="hidden mb-6 p-4 bg-blue-50 rounded-lg">
+						<p class="font-semibold text-sm mb-2">Selected Players:</p>
+						<div id="selectedPlayersList" class="flex flex-wrap gap-2"></div>
+					</div>
+
+					<!-- Error Message -->
+					<p id="errorMessage" class="text-red-600 mb-4"></p>
+
+					<!-- Buttons -->
+					<div class="flex gap-3 mt-8">
+						<button id="createBtn" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg font-semibold transition">
+							Create Tournament
+						</button>
+						<button id="cancelBtn" class="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-900 py-3 rounded-lg font-semibold transition">
+							Cancel
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<script src="tournament-modal.js" defer></script>
+	</body>
+</html>

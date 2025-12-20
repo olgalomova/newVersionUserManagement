@@ -1,22 +1,25 @@
 import sqlite3 from 'sqlite3'
 import { open } from 'sqlite'
+import path from 'path'
+import { fileURLToPath } from 'url'
 
-// Функция для подключения к базе
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
+
 export async function openDB() {
-	const dbPath = process.env.DB_PATH || '/app/data/users.db'
-	const db = await open({
-		filename: dbPath,
-		driver: sqlite3.Database
-	})
+	const dbPath = process.env.DB_PATH || path.join(__dirname, '../data/users.db')
+	console.log('Opening DB at:', dbPath)
 
-	// Создаём таблицу, если её нет (на случай если init-db не выполнился)
-	await db.exec(`CREATE TABLE IF NOT EXISTS users (
-	    id INTEGER PRIMARY KEY AUTOINCREMENT,
-	    login TEXT UNIQUE NOT NULL,
-	    email TEXT UNIQUE NOT NULL,
-	    password TEXT NOT NULL,
-	    avatar TEXT
-	)`)
-
-	return db
+	try {
+		const db = await open({
+			filename: dbPath,
+			driver: sqlite3.Database
+		})
+		console.log('Database connected successfully')
+		return db
+	}
+	catch (err) {
+		console.error('Failed to open database:', err)
+		throw err
+	}
 }

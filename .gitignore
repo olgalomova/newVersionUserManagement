@@ -1,9 +1,1 @@
-# SSL сертификаты
-nginx/cert/
-*.crt
-*.key
-
-# Локальные данные проекта
-backend/data/
-
 .env

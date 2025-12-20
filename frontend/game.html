@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Game</title>
+		<script src="https://cdn.tailwindcss.com"></script>
+	</head>
+	<body class="bg-gray-50 text-gray-900">
+
+		<div class="min-h-screen flex flex-col items-center justify-center p-4">
+			<div class="bg-white rounded-2xl p-12 text-center max-w-md w-full shadow-lg border border-gray-200">
+				<h1 class="text-4xl font-bold mb-8">Game Room</h1>
+
+				<div class="bg-blue-50 rounded-lg p-6 mb-8 border border-blue-200">
+					<p class="text-gray-600 text-sm mb-2">Game ID</p>
+					<p id="gameId" class="text-2xl font-bold text-blue-600 font-mono">Loading...</p>
+				</div>
+
+				<div id="gameInfo" class="space-y-4 mb-8">
+					<div>
+						<p class="text-gray-600 text-sm">Player 1</p>
+						<p id="player1Name" class="text-xl font-semibold text-gray-900">Loading...</p>
+					</div>
+					<div class="text-gray-400">vs</div>
+					<div>
+						<p class="text-gray-600 text-sm">Player 2</p>
+						<p id="player2Name" class="text-xl font-semibold text-gray-900">Loading...</p>
+					</div>
+				</div>
+
+				<div id="waitingState" class="mb-8 hidden">
+					<div class="inline-block animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-blue-500"></div>
+					<p class="mt-4 text-gray-600">Waiting for opponent...</p>
+				</div>
+
+				<button onclick="window.location.href='profile.html'" class="bg-blue-600 hover:bg-blue-700 text-white py-3 px-6 rounded-lg font-semibold transition w-full">
+					Back to Profile
+				</button>
+			</div>
+		</div>
+
+		<script src="game.js" defer></script>
+	</body>
+</html>

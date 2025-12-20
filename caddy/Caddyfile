@@ -1,0 +1,179 @@
+olomova.42.fr {
+	tls internal
+	@api_post {
+		path /registration
+		path /login
+		path /logout
+		path /profile
+		path /avatar
+		path /game/create
+		path /friend-request
+		path /friend-accept
+		path /friend-reject
+		path /tournament/create
+		method POST
+	}
+
+	@api_get {
+		path /profile
+		path /search
+		path /friend-requests
+		path /friends
+		path /game-pending
+		path /tournament/invitations
+		method GET
+	}
+	
+	@api_put {
+		path /profile
+		method PUT
+	}
+
+	@api_delete {
+		path /profile
+		path /avatar
+		method DELETE
+	}
+
+	@friend_remove {
+		path /friend-remove
+		method DELETE
+	}
+
+	@api_auth {
+		path /auth/google
+		path /auth/google/callback
+	}
+
+	@game_detail {
+		path_regexp ^/game/[0-9]+$
+		method GET
+	}
+
+	@tournament_detail {
+		path_regexp ^/tournament/[0-9]+$
+		method GET
+	}
+
+	@game_accept {
+		path_regexp ^/game/[0-9]+/accept$
+		method POST
+	}
+
+	@game_finish {
+		path_regexp ^/game/[0-9]+/finish$
+		method POST
+	}
+
+	@tournament_accept {
+		path_regexp ^/tournament/[0-9]+/accept$
+		method POST
+	}
+
+	@tournament_decline {
+		path_regexp ^/tournament/[0-9]+/decline$
+		method POST
+	}
+
+	@tournament_start {
+		path_regexp ^/tournament/[0-9]+/start$
+		method POST
+	}
+
+	@tournament_finish {
+		path_regexp ^/tournament/[0-9]+/finish$
+		method POST
+	}
+
+	reverse_proxy @api_post backend:3000 {
+		header_up X-Forwarded-Proto https
+		header_up X-Real-IP {http.request.remote.host}
+	}
+
+	reverse_proxy @api_get backend:3000 {
+		header_up X-Forwarded-Proto https
+		header_up X-Real-IP {http.request.remote.host}
+	}
+
+	reverse_proxy @api_put backend:3000 {
+		header_up X-Forwarded-Proto https
+		header_up X-Real-IP {http.request.remote.host}
+	}
+
+	reverse_proxy @api_delete backend:3000 {
+		header_up X-Forwarded-Proto https
+		header_up X-Real-IP {http.request.remote.host}
+	}
+
+	reverse_proxy @friend_remove backend:3000 {
+		header_up X-Forwarded-Proto https
+		header_up X-Real-IP {http.request.remote.host}
+	}
+
+	reverse_proxy @api_auth backend:3000 {
+		header_up X-Forwarded-Proto https
+		header_up X-Real-IP {http.request.remote.host}
+	}
+
+	reverse_proxy @game_detail backend:3000 {
+		header_up X-Forwarded-Proto https
+		header_up X-Real-IP {http.request.remote.host}
+	}
+
+	reverse_proxy @game_accept backend:3000 {
+		header_up X-Forwarded-Proto https
+		header_up X-Real-IP {http.request.remote.host}
+	}
+
+	reverse_proxy @game_finish backend:3000 {
+		header_up X-Forwarded-Proto https
+		header_up X-Real-IP {http.request.remote.host}
+	}
+
+	reverse_proxy @tournament_detail backend:3000 {
+		header_up X-Forwarded-Proto https
+		header_up X-Real-IP {http.request.remote.host}
+	}
+
+	reverse_proxy @tournament_accept backend:3000 {
+		header_up X-Forwarded-Proto https
+		header_up X-Real-IP {http.request.remote.host}
+	}
+
+	reverse_proxy @tournament_decline backend:3000 {
+		header_up X-Forwarded-Proto https
+		header_up X-Real-IP {http.request.remote.host}
+	}
+
+	reverse_proxy @tournament_start backend:3000 {
+		header_up X-Forwarded-Proto https
+		header_up X-Real-IP {http.request.remote.host}
+	}
+
+	reverse_proxy @tournament_finish backend:3000 {
+		header_up X-Forwarded-Proto https
+		header_up X-Real-IP {http.request.remote.host}
+	}
+
+	@uploads {
+		path /uploads/*
+	}
+
+	file_server @uploads {
+		root /usr/share/caddy
+		browse off
+	}
+
+	header @uploads Cache-Control "public, max-age=31536000, immutable"
+
+	@static {
+		path *.jpg *.jpeg *.png *.gif *.ico *.css *.js *.svg *.woff *.woff2 *.ttf *.eot
+	}
+
+	header @static Cache-Control "public, max-age=31536000, immutable"
+
+	file_server {
+		root /usr/share/caddy
+		index index.html
+	}
+}

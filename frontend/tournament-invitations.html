@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Tournament Invitations</title>
+		<script src="https://cdn.tailwindcss.com"></script>
+	</head>
+	<body class="bg-gray-50">
+
+		<div id="invitationsModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+			<div class="bg-white rounded-2xl p-8 w-full max-w-2xl shadow-2xl max-h-[90vh] overflow-y-auto">
+				<div class="flex items-center justify-between mb-6">
+					<h2 class="text-3xl font-bold">Tournament Invitations</h2>
+					<button id="closeModal" class="text-gray-500 hover:text-gray-700 text-2xl">×</button>
+				</div>
+
+				<!-- Loading State -->
+				<div id="loadingState" class="text-center py-8">
+					<div class="inline-block animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+					<p class="mt-4 text-gray-600">Loading invitations...</p>
+				</div>
+
+				<!-- Invitations List -->
+				<div id="invitationsList" class="hidden space-y-4"></div>
+
+				<!-- Empty State -->
+				<div id="emptyState" class="hidden text-center py-8">
+					<p class="text-gray-600 text-lg">No active invitations</p>
+					<p class="text-gray-500 text-sm mt-2">Invitations from tournaments will appear here</p>
+				</div>
+
+				<!-- Close Button -->
+				<button id="closeBtn" class="hidden w-full mt-6 bg-gray-200 hover:bg-gray-300 text-gray-900 py-3 rounded-lg font-semibold transition">
+					Close
+				</button>
+			</div>
+		</div>
+
+		<script src="tournament-invitations.js" defer></script>
+	</body>
+</html>
